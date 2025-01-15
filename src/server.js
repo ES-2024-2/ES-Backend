@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectToDatabase } from "./config/database.js";
 import restaurantRouter from "./routes/restaurantRoutes.js";
+import "./config/initialize-db.js"
 
 dotenv.config();
 
