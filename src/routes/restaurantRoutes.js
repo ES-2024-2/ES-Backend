@@ -1,3 +1,4 @@
+// src/routes/restaurantRoutes.js
 import { Router } from "express";
 import {
   getAllRestaurantes,

@@ -1,8 +1,12 @@
+// src/server.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectToDatabase } from "./config/database.js";
 import restaurantRouter from "./routes/restaurantRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+import reviewRouter from "./routes/reviewRoutes.js";
+import sessionRouter from "./routes/sessionRoutes.js";
 import "./config/initialize-db.js"
 
 dotenv.config();
@@ -19,7 +23,10 @@ try {
   process.exit(1);
 }
 
-app.use("/restaurants", restaurantRouter);
+app.use("/", restaurantRouter);
+app.use("/", userRouter);
+app.use("/", reviewRouter);
+app.use("/", sessionRouter);
 
 app.get("/health", async (req, res) => {
   try {

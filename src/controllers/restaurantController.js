@@ -1,3 +1,4 @@
+// src/controllers/restaurantController.js
 import { connectToDatabase } from "../config/database.js";
 
 export const getAllRestaurantes = async (req, res) => {
@@ -38,6 +39,30 @@ export const createRestaurante = async (req, res) => {
     );
 
     res.status(201).json({ message: "Restaurante criado com sucesso!" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// nao esquecer de exportar a função
+export const getRestauranteWithReviews = async (req, res) => {
+  try {
+    const db = await connectToDatabase();
+    const restaurante = await db.get(
+      "SELECT * FROM restaurantes WHERE id_restaurante = ?",
+      [req.params.id]
+    );
+
+    if (!restaurante) {
+      return res.status(404).json({ message: "Restaurante não encontrado" });
+    }
+
+    const avaliacoes = await db.all(
+      "SELECT * FROM avaliacoes WHERE id_restaurante = ?",
+      [req.params.id]
+    );
+
+    res.status(200).json({ restaurante, avaliacoes });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
