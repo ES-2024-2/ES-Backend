@@ -1,4 +1,4 @@
-import { connectToDatabase } from "../database.js";
+import { connectToDatabase } from "../config/database.js";
 
 export const getAllRestaurantes = async (req, res) => {
   try {

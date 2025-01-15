@@ -5,10 +5,10 @@ import {
   createRestaurante,
 } from "../controllers/restaurantController.js";
 
-const router = Router();
+const restaurantRouter = Router();
 
-router.get("/restaurants", getAllRestaurantes);
-router.post("/restaurants", createRestaurante);
-router.get("/restaurants/:id", getRestauranteById);
+restaurantRouter.get("/restaurants", getAllRestaurantes);
+restaurantRouter.post("/restaurants", createRestaurante);
+restaurantRouter.get("/restaurants/:id", getRestauranteById);
 
 export default restaurantRouter;
