@@ -4,7 +4,7 @@ import { createUser, loginUser } from "../controllers/userController.js";
 const userRouter = Router();
 
 // POST /api/users - Register a new user
-userRouter.post("/", createUser);
+userRouter.post("/users", createUser);
 
 // POST /api/users/login - Login a user
 userRouter.post("/login", loginUser);
