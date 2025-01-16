@@ -19,21 +19,3 @@ export const createUser = async (req, res) => {
   }
 };
 
-// Controller for user login
-export const loginUser = async (req, res) => {
-  try {
-    const { email, senha } = req.body;
-
-    // Call service layer to handle login logic
-    const { token, user } = await userService.loginUser(email, senha);
-
-    // Respond with token and serialized user data
-    res.status(200).json({
-      message: "Login realizado com sucesso!",
-      token,
-      user: serializeUser(user), // Exclude password from user object
-    });
-  } catch (error) {
-    res.status(401).json({ error: error.message });
-  }
-};

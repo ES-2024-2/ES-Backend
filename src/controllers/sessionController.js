@@ -1,23 +1,36 @@
-// src/controllers/sessionController.js
-import { connectToDatabase } from "../config/database.js";
+import * as sessionService from "../services/sessionService.js";
+import { serializeUser } from "../models/userModel.js";
 
+// Controller for user login (creates a session automatically)
 export const createSession = async (req, res) => {
   try {
     const { email, senha } = req.body;
-    const db = await connectToDatabase();
 
-    const user = await db.get(
-      "SELECT * FROM usuarios WHERE email = ? AND senha = ?",
-      [email, senha]
-    );
+    // Delegate to service to handle login and session creation
+    const { token, user } = await sessionService.loginUser(email, senha);
 
-    if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
-    }
-
-    // Aqui você pode gerar um token de sessão, se necessário
-    res.status(200).json({ message: "Login bem-sucedido", user });
+    res.status(200).json({
+      message: "Login realizado com sucesso!",
+      token, // JWT token for the session
+      user: serializeUser(user),  // User details (excluding sensitive data like password)
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(401).json({ error: error.message });
+  }
+};
+
+
+
+// Controller for deleting a session (logout)
+export const deleteSession = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    // Delegate to the service layer
+    await sessionService.logoutUser(token);
+
+    res.status(200).json({ message: "Sessão encerrada com sucesso!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
