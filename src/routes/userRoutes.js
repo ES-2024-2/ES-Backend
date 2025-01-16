@@ -7,6 +7,6 @@ const userRouter = Router();
 userRouter.post("/users", createUser);
 
 // POST /api/users/login - Login a user
-userRouter.post("/login", loginUser);
+userRouter.post("/users/login", loginUser);
 
 export default userRouter;
