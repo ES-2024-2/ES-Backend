@@ -1,10 +1,14 @@
 // src/controllers/restaurantController.js
-import { connectToDatabase } from "../config/database.js";
+import {
+  fetchAllRestaurantes,
+  fetchRestauranteById,
+  insertRestaurante,
+  fetchRestauranteWithReviews
+} from "../repositories/restaurantRepository.js";
 
 export const getAllRestaurantes = async (req, res) => {
   try {
-    const db = await connectToDatabase();
-    const restaurantes = await db.all("SELECT * FROM restaurantes");
+    const restaurantes = await fetchAllRestaurantes();
     res.status(200).json(restaurantes);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -13,10 +17,7 @@ export const getAllRestaurantes = async (req, res) => {
 
 export const getRestauranteById = async (req, res) => {
   try {
-    const db = await connectToDatabase();
-    const restaurante = await db.get("SELECT * FROM restaurantes WHERE id_restaurante = ?", [
-      req.params.id,
-    ]);
+    const restaurante = await fetchRestauranteById(req.params.id);
 
     if (!restaurante) {
       return res.status(404).json({ message: "Restaurante não encontrado" });
@@ -31,12 +32,8 @@ export const getRestauranteById = async (req, res) => {
 export const createRestaurante = async (req, res) => {
   try {
     const { id_restaurante, cep, endereco, id_usuario } = req.body;
-    const db = await connectToDatabase();
 
-    await db.run(
-      "INSERT INTO restaurantes (id_restaurante, cep, endereco, id_usuario) VALUES (?, ?, ?, ?)",
-      [id_restaurante, cep, endereco, id_usuario]
-    );
+    await insertRestaurante(id_restaurante, cep, endereco, id_usuario);
 
     res.status(201).json({ message: "Restaurante criado com sucesso!" });
   } catch (error) {
@@ -44,23 +41,13 @@ export const createRestaurante = async (req, res) => {
   }
 };
 
-// nao esquecer de exportar a função
 export const getRestauranteWithReviews = async (req, res) => {
   try {
-    const db = await connectToDatabase();
-    const restaurante = await db.get(
-      "SELECT * FROM restaurantes WHERE id_restaurante = ?",
-      [req.params.id]
-    );
+    const { restaurante, avaliacoes } = await fetchRestauranteWithReviews(req.params.id);
 
     if (!restaurante) {
       return res.status(404).json({ message: "Restaurante não encontrado" });
     }
-
-    const avaliacoes = await db.all(
-      "SELECT * FROM avaliacoes WHERE id_restaurante = ?",
-      [req.params.id]
-    );
 
     res.status(200).json({ restaurante, avaliacoes });
   } catch (error) {

@@ -1,3 +1,4 @@
+// src/repositories/userRepository.js
 import { connectToDatabase } from "../config/database.js";
 
 // Find a user by email

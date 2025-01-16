@@ -1,3 +1,4 @@
+// src/services/sessionService.js
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import * as userRepository from "../repositories/userRepository.js";
@@ -26,4 +27,15 @@ export const loginUser = async (email, senha) => {
   await sessionRepository.createSession({ userId: user.id_usuario, token });
 
   return { token, user };
+};
+
+export const deleteUser = async (token) => {
+  
+  await sessionRepository.deleteSession(token);
+
+  return { };
+};
+
+export const findSessions = async () => {
+  return await sessionRepository.findSessions();
 };
