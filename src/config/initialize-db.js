@@ -30,6 +30,7 @@ import { open } from "sqlite";
             id_restaurante TEXT NOT NULL,
             descricao_menu TEXT NOT NULL,
             id_usuario INTEGER NOT NULL,
+            preco REAL NOT NULL DEFAULT 0.0,
             FOREIGN KEY (id_restaurante) REFERENCES restaurantes (id_restaurante) ON DELETE CASCADE,
             FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario)
         );
