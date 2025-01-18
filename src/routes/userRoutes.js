@@ -1,10 +1,10 @@
-// src/routes/userRoutes.js
 import { Router } from "express";
-import { createUser, loginUser } from "../controllers/userController.js";
+import { createUser} from "../controllers/userController.js";
 
 const userRouter = Router();
 
+// POST /api/users - Register a new user
 userRouter.post("/users", createUser);
-userRouter.post("/users/login", loginUser);
+
 
 export default userRouter;

@@ -1,38 +1,21 @@
-// src/controllers/userController.js
-import { connectToDatabase } from "../config/database.js";
+import * as userService from "../services/userService.js";
+import { serializeUser } from "../models/userModel.js";
 
+// Controller for user registration
 export const createUser = async (req, res) => {
   try {
-    const { nome, senha, email } = req.body;
-    const db = await connectToDatabase();
+    const userData = req.body;
 
-    await db.run(
-      "INSERT INTO usuarios (nome, senha, email) VALUES (?, ?, ?)",
-      [nome, senha, email]
-    );
+    // Call service layer to handle business logic
+    const newUser = await userService.registerUser(userData);
 
-    res.status(201).json({ message: "Usuário criado com sucesso!" });
+    // Respond with serialized user data
+    res.status(201).json({
+      message: "Usuário criado com sucesso!",
+      user: serializeUser(newUser), // Ensure user data does not include password
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
-export const loginUser = async (req, res) => {
-  try {
-    const { email, senha } = req.body;
-    const db = await connectToDatabase();
-
-    const user = await db.get(
-      "SELECT * FROM usuarios WHERE email = ? AND senha = ?",
-      [email, senha]
-    );
-
-    if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
-    }
-
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
