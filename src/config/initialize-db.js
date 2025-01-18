@@ -3,6 +3,7 @@ import path from "path";
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
 
+
 (async () => {
     const dbPath = path.resolve("src/config/database.db");
     const db = await open({
@@ -13,6 +14,7 @@ import { open } from "sqlite";
     const schema = `
         BEGIN TRANSACTION;
 
+        -- Criação das tabelas
         CREATE TABLE IF NOT EXISTS avaliacoes (
             id_avaliacao INTEGER PRIMARY KEY AUTOINCREMENT,
             descricao TEXT NOT NULL,
@@ -37,6 +39,8 @@ import { open } from "sqlite";
             cep TEXT NOT NULL,
             endereco TEXT NOT NULL,
             id_usuario INTEGER NOT NULL,
+            imagem TEXT, 
+            numero_avaliacoes REAL DEFAULT 0.0, 
             FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario) ON DELETE CASCADE
         );
 

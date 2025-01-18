@@ -31,15 +31,23 @@ export const getRestauranteById = async (req, res) => {
 
 export const createRestaurante = async (req, res) => {
   try {
-    const { id_restaurante, cep, endereco, id_usuario } = req.body;
+    console.log("Dados recebidos no backend:", req.body);
 
-    await insertRestaurante(id_restaurante, cep, endereco, id_usuario);
+    const { id_restaurante, cep, endereco, id_usuario, imagem, numero_avaliacoes } = req.body;
+
+    if (!cep) {
+      return res.status(400).json({ error: "O campo 'cep' é obrigatório." });
+    }
+
+    await insertRestaurante(id_restaurante, cep, endereco, id_usuario, imagem, numero_avaliacoes);
 
     res.status(201).json({ message: "Restaurante criado com sucesso!" });
   } catch (error) {
+    console.error("Erro no createRestaurante:", error.message);
     res.status(500).json({ error: error.message });
   }
 };
+
 
 export const getRestauranteWithReviews = async (req, res) => {
   try {
