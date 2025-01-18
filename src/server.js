@@ -7,6 +7,7 @@ import restaurantRouter from "./routes/restaurantRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import reviewRouter from "./routes/reviewRoutes.js";
 import sessionRouter from "./routes/sessionRoutes.js";
+import menuRouter from "./routes/menuRoutes.js";
 import "./config/initialize-db.js"
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use("/", restaurantRouter);
 app.use("/", userRouter);
 app.use("/", reviewRouter);
 app.use("/", sessionRouter);
+app.use("/", menuRouter);
 
 app.get("/health", async (req, res) => {
   try {
