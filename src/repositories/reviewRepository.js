@@ -21,7 +21,20 @@ export const deleteReview = async (id) => {
 
 export const getRestaurantReviews = async (restaurantId) => {
   const db = await connectToDatabase();
-  return db.all("SELECT * FROM avaliacoes WHERE id_restaurante = ?", [restaurantId]);
+  const results = await db.all(
+    `SELECT 
+       avaliacoes.id_avaliacao, 
+       avaliacoes.descricao, 
+       avaliacoes.nota, 
+       avaliacoes.id_restaurante, 
+       usuarios.nome
+     FROM avaliacoes
+     INNER JOIN usuarios ON avaliacoes.id_usuario = usuarios.id_usuario
+     WHERE avaliacoes.id_restaurante = ?`,
+    [restaurantId]
+  );
+  console.log("Query Results:", results);
+  return results;
 };
 
 export const createReview = async (descricao, nota, id_usuario, id_restaurante) => {
