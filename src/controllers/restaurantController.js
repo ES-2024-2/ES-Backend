@@ -3,7 +3,8 @@ import {
   fetchAllRestaurantes,
   fetchRestauranteById,
   insertRestaurante,
-  fetchRestauranteWithReviews
+  fetchRestauranteWithReviews,
+  getAverageRatingByRestaurant
 } from "../repositories/restaurantRepository.js";
 
 export const getAllRestaurantes = async (req, res) => {
@@ -41,7 +42,6 @@ export const createRestaurante = async (req, res) => {
   }
 };
 
-
 export const getRestauranteWithReviews = async (req, res) => {
   try {
     const { restaurante, avaliacoes } = await fetchRestauranteWithReviews(req.params.id);
@@ -55,3 +55,13 @@ export const getRestauranteWithReviews = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getRestaurantAverageRating = async (req, res) => {
+  try {
+    const averageRating = await getAverageRatingByRestaurant(req.params.restaurantId);
+    res.status(200).json({ averageRating });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+

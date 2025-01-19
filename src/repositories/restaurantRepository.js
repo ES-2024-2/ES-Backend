@@ -41,3 +41,13 @@ export const fetchRestauranteWithReviews = async (id) => {
 
   return { restaurante, avaliacoes };
 };
+
+export const getAverageRatingByRestaurant = async (restaurantId) => {
+  const db = await connectToDatabase();
+  const result = await db.get(
+    `SELECT AVG(nota) AS media FROM avaliacoes WHERE id_restaurante = ?`,
+    [restaurantId]
+  );
+  await db.close();
+  return result?.media || 5;
+};
