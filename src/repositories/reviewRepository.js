@@ -26,7 +26,8 @@ export const getRestaurantReviews = async (restaurantId) => {
        avaliacoes.id_avaliacao, 
        avaliacoes.descricao, 
        avaliacoes.nota, 
-       avaliacoes.id_restaurante, 
+       avaliacoes.id_restaurante,
+       avaliacoes.id_usuario, 
        usuarios.nome
      FROM avaliacoes
      INNER JOIN usuarios ON avaliacoes.id_usuario = usuarios.id_usuario
