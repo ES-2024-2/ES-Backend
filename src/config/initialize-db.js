@@ -5,7 +5,7 @@ import { open } from "sqlite";
 
 
 (async () => {
-    const dbPath = path.resolve("src/config/database.db");
+    const dbPath = process.env.DB_PATH || path.resolve("src/config/database.db");
     const db = await open({
         filename: dbPath,
         driver: sqlite3.Database,

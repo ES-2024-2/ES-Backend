@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "node src/server.js"
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "init-db": "node src/config/initialize-db.js"
   },
   "keywords": [],
   "author": "",
